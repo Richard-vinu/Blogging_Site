@@ -1,0 +1,24 @@
+{
+  "name": "blogging_site_mini_project",
+  "version": "1.0.0",
+  "description": "Repository for backend cohort - Plutonium",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Richard-vinu/Blogging_Site_Mini_Project.git"
+  },
+  "author": "richard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Richard-vinu/Blogging_Site_Mini_Project/issues"
+  },
+  "homepage": "https://github.com/Richard-vinu/Blogging_Site_Mini_Project#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongoose": "^6.5.4",
+    "nodemon": "^2.0.19"
+  }
+}
