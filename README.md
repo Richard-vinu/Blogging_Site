@@ -139,3 +139,4 @@ Refer below sample
 
 #### Note: Create a group database and use the same database in connection string by replacing `groupXDatabase
 
+for empty string (/^[a-z]+$/i)
