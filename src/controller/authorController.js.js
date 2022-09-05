@@ -12,6 +12,18 @@ const createAuthor = async (req,res)=>{
          if(!title){res.status(400).send({msg:"title is mandatory"})}
          if(!email){res.status(400).send({msg:"email is mandatory"})}
          if(!password){res.status(400).send({msg:"password is mandatory"})}
+
+//*To check Email Exist or not
+
+    let emailID= await authorModel.findOne({email})
+    if(emailID) return res.status(400).send({msg:"Account already Present with this EmailID"})
+
+
+//*Email format Validation
+
+    const validate = function(v){ return /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test(v)}
+    if(!validate(email)) return res.status(400).send({ status: false, msg: "email is not valid" })
+
    const data = await authorModel.create(result)
 
    res.status(201).send({data:data})
