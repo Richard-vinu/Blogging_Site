@@ -7,6 +7,6 @@ const {createblog,getBlogByQuery}= require("../controller/blogcontroller")
 
 router.post('/authors',createAuthor)
 router.post("/login",loginAuthor)
-router.post('/createblog',createblog)
+router.post('/blogs',createblog)
 router.get('/blogs',getBlogByQuery)
 module.exports = router
