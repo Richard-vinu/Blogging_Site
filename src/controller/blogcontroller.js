@@ -56,7 +56,7 @@ const deleteUser = async function (req, res) {
     res.status(500).send({ msg: error.message })
   }
 }
-=======
+
 const getBlogByQuery = async function (req, res) {
   try {
     let authId = req.query.authorId;
@@ -78,7 +78,7 @@ const getBlogByQuery = async function (req, res) {
       })
       .populate("authorId");
 
-module.exports = {createblog,getBlogByQuery,updateBlogById,deleteUser}
+// module.exports = {createblog,getBlogByQuery,updateBlogById,deleteUser}
 
     //*Validation
 
@@ -132,6 +132,30 @@ const updateBlogById = async (req, res) => {
       .send({ status: false, msg: "server Error", err: err.message });
   }
 };
+//-------------------BY VERONICA-----------------------------------------
+let DeleteWithQuery = async function (req, res) {
+      let category = req.query.category
+      let authorId = req.query.authorId
+      let tags = req.query.tags
+      let subcategory = req.query.subcategory
+      let isPublished = req.query.isPublished
+      let conditions = {
+        $or: [
+          { category: category },
+          { authorId: authorId },
+          { tags: tags },
+          { subcategory: subcategory },
+        ]
+      }
+      if (isPublished === "false") { res.send({ msg: "it is unpublished" }) }
 
-module.exports = { createblog, getBlogByQuery, updateBlogById };
+      else if (!conditions) { res.send({ msg: "not found" }) }
+      else {
+        let DeleteWithFilters = await blogModel.find(conditions).updateMany({ conditions }, { isDeleted: true })
+        let updatedData = await blogModel.find(DeleteWithFilters)
+        res.send(updatedData)
+      }
+
+    }
+module.exports = { createblog, getBlogByQuery, updateBlogById,DeleteWithQuery,deleteUser };
 
