@@ -2,6 +2,9 @@ let blogModel = require('../models/blogModel')
  
 
 let createblog = async function(req,res){
+
+  try{
+
     let data = req.body
     let{title,body,authorId,tags,category,subcategory,isDeleted,isPublished}=data
     if(!title){ res.status(400).send({ msg: "title is mandatory" }) }
@@ -14,10 +17,33 @@ let createblog = async function(req,res){
     if(!isDeleted){ res.status(400).send({ msg: "isDeleted is mandatory" }) }
     if(!isPublished){ res.status(400).send({ msg: "isPublished is mandatory" }) }
 
-    let savedata = await blogModel.create(data)
-    res.send({data:savedata})
-}
+    let blogCreated = await blogModel.create(data);
+
+    if (data.isPublished === true) {
+      let Update = await blogModel.findOneAndUpdate(
+        { authorId: data.authorId },
+        { $set: { publishedAt: new Date() } },
+        { new: true }
+      );
+    }
+    if (body.isDeleted === true) {
+      let CreateDeleteTime = await blogModel.findOneAndUpdate(
+        { authorId: data.authorId },
+        { $set: { deletedAt: new Date() } },
+        { new: true }
+      );
+    }
+    let Finaldata = await blogModel.find(data);
+
+    res.status(201).send({ status: true, data: Finaldata });
   
+  } catch (err) {
+    res
+      .status(500)
+      .send({ status: false, msg: "server Error", err: err.message });
+  }
+};
+   
 
 
  
