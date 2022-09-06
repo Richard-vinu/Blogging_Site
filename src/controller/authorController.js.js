@@ -7,6 +7,7 @@ const createAuthor = async (req,res)=>{
 
         let result = req.body
         let {fname,lname,title,email,password}=result
+        
         if(!fname){res.status(400).send({msg:"fname is mandatory"})}
          if(!lname){res.status(400).send({msg:"lname is mandatory"})}
          if(!title){res.status(400).send({msg:"title is mandatory"})}

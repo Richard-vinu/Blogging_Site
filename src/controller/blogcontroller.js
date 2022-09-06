@@ -3,10 +3,10 @@ let blogModel = require('../models/blogModel')
 
 let createblog = async function(req,res){
     let data = req.body
+    
     let savedata = await blogModel.create(data)
     res.send({data:savedata})
 }
-
 
 
 
@@ -44,7 +44,27 @@ const getBlogByQuery = async function (req, res) {
     }
   };
 
+  
+  //PUT /blogs/:blogId
+
+const updateBlogById = async (req,res)=>{
+try{
+  let data = req.query
+
+  let result = await blogModel.findOneAndDelete()
+
+  res.send({data:result})
+}
+
+
+  catch (err) {
+    res
+      .status(500)
+      .send({ status: false, msg: "server Error", err: err.message });
+  }
+};
 
 
 
-module.exports = {createblog,getBlogByQuery}
+
+module.exports = {createblog,getBlogByQuery,updateBlogById}
