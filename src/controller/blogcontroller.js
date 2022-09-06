@@ -1,10 +1,15 @@
 let blogModel = require("../models/blogModel");
 
+
+
+
+//Create_Blog
 let createblog = async function (req, res) {
   try {
     let data = req.body;
-    let { title, body, authorId, tags, category, subcategory, isPublished } =
-      data;
+    let { title, body, authorId, tags, category, subcategory, isPublished } = data;
+
+    //*Validation
     if (!title) {
       res.status(400).send({ msg: "title is mandatory" });
     }
@@ -39,6 +44,8 @@ let createblog = async function (req, res) {
   }
 };
 
+
+//Get-Blogs
 const getBlogByQuery = async function (req, res) {
   try {
     let authId = req.query.authorId;
@@ -71,22 +78,23 @@ const getBlogByQuery = async function (req, res) {
   }
 };
 
-//-------------------------------updateBlogById----------------------------------------
-//By Richard
 
+//UpdateBlog-By-Id
 const updateBlogById = async (req, res) => {
   try {
     let data = req.body;
 
     let blogId = req.params.blogId;
 
+    //*Validation
+
     if (!blogId)
       return res.status(404).send({ status: false, msg: "No Blog Found" });
 
-      let findBlogId = await blogModel.findById(blogId);//finding the blogId in the database to check whether it is valid or not
+      let findBlogId = await blogModel.findById(blogId);
+     
       if(!findBlogId) return res.status(404).send({ status: false, msg: "No such blog exist" });
   
-      //Verify that the document is deleted or not
       if(findBlogId.isDeleted) 
       return res.status(404).send({ status: false, msg: "No such blog found or has already been deleted" });
 
