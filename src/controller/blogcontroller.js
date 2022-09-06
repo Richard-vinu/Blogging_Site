@@ -76,9 +76,14 @@ const getBlogByQuery = async function (req, res) {
 
 const updateBlogById = async (req,res)=>{
 try{
-  let data = req.query
+  let data = req.body
 
-  let result = await blogModel.findOneAndDelete()
+  let blogId = req.params.blogId
+  
+
+  let{title, body,tags,subcategory} = data
+
+  let result = await blogModel.findOneAndUpdate({_id:blogId},{title:title,body:body,tags:tags,subcategory,subcategory},{new:true})
 
   res.send({data:result})
 }
