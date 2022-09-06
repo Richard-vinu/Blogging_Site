@@ -39,7 +39,7 @@ let createblog = async function (req, res) {
   }
 };
 
-<<<<<<< HEAD
+//-------------------------------------------
 const deleteUser = async function (req, res) {
   try {
     let blogId = req.params.blogId;
@@ -63,7 +63,7 @@ const getBlogByQuery = async function (req, res) {
     let cat = req.query.category;
     let subcat = req.query.subcategory;
     let tag = req.query.tags;
->>>>>>> a36d95e9fb0af5dc2a43d4b8b9280b6498a69501
+
 
     let allData = await blogModel
       .find({
@@ -78,9 +78,8 @@ const getBlogByQuery = async function (req, res) {
       })
       .populate("authorId");
 
-<<<<<<< HEAD
 module.exports = {createblog,getBlogByQuery,updateBlogById,deleteUser}
-=======
+
     //*Validation
 
     if (allData.length == 0)
@@ -135,4 +134,4 @@ const updateBlogById = async (req, res) => {
 };
 
 module.exports = { createblog, getBlogByQuery, updateBlogById };
->>>>>>> a36d95e9fb0af5dc2a43d4b8b9280b6498a69501
+
