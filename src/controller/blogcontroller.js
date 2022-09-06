@@ -75,7 +75,22 @@ try{
   }
 };
 
+const deleteUser = async function (req, res) {
+  try {
+    let blogId = req.params.blogId;
+    let blog = await blogModel.findOne({ _id: blogId, isDeleted: false })
+
+    if (!blog) {
+      return res.status(404).send({ status: false, msg: "No blogs found to delete" })
+    }
+    await blogModel.findOneAndUpdate({ _id: blogId }, { $set: { isDeleted: true, deletedAt: new Date() } })
+    return res.status(200).send({ status: true, msg: "deleted successfully" }) // here  status true and data comes
+
+  } catch (error) {
+  
+    res.status(500).send({ msg: error.message })
+  }
+}
 
 
-
-module.exports = {createblog,getBlogByQuery,updateBlogById}
+module.exports = {createblog,getBlogByQuery,updateBlogById,deleteUser}
