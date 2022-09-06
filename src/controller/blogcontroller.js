@@ -6,7 +6,7 @@ let createblog = async function(req,res){
   try{
 
     let data = req.body
-    let{title,body,authorId,tags,category,subcategory,isDeleted,isPublished}=data
+    let{title,body,authorId,tags,category,subcategory,isPublished}=data
     if(!title){ res.status(400).send({ msg: "title is mandatory" }) }
     if(!body){ res.status(400).send({ msg: "body is mandatory" }) }
 
@@ -14,28 +14,17 @@ let createblog = async function(req,res){
     if(!tags){ res.status(400).send({ msg: "tags is mandatory" }) }
     if(!category){ res.status(400).send({ msg: "category is mandatory" }) }
     if(!subcategory){ res.status(400).send({ msg: "subcategory is mandatory" }) }
-    if(!isDeleted){ res.status(400).send({ msg: "isDeleted is mandatory" }) }
-    if(!isPublished){ res.status(400).send({ msg: "isPublished is mandatory" }) }
+  
 
+   
+
+    if(isPublished){
+      let timeStamps = new Date();
+      data.publishedAt = timeStamps;
+    }
+    
     let blogCreated = await blogModel.create(data);
-
-    if (data.isPublished === true) {
-      let Update = await blogModel.findOneAndUpdate(
-        { authorId: data.authorId },
-        { $set: { publishedAt: new Date() } },
-        { new: true }
-      );
-    }
-    if (body.isDeleted === true) {
-      let CreateDeleteTime = await blogModel.findOneAndUpdate(
-        { authorId: data.authorId },
-        { $set: { deletedAt: new Date() } },
-        { new: true }
-      );
-    }
-    let Finaldata = await blogModel.find(data);
-
-    res.status(201).send({ status: true, data: Finaldata });
+    res.status(201).send({ status: true, data: blogCreated });
   
   } catch (err) {
     res
@@ -81,8 +70,9 @@ const getBlogByQuery = async function (req, res) {
     }
   };
 
+//-------------------------------updateBlogById-----------------------
+//By Richard
   
-  //PUT /blogs/:blogId
 
 const updateBlogById = async (req,res)=>{
 try{
