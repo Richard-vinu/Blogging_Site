@@ -44,7 +44,6 @@ let createblog = async function (req, res) {
   }
 };
 
-
 //Get-Blogs
 const getBlogByQuery = async function (req, res) {
   try {
@@ -52,6 +51,7 @@ const getBlogByQuery = async function (req, res) {
     let cat = req.query.category;
     let subcat = req.query.subcategory;
     let tag = req.query.tags;
+
 
     let allData = await blogModel
       .find({
@@ -120,4 +120,48 @@ const updateBlogById = async (req, res) => {
   }
 };
 
-module.exports = { createblog, getBlogByQuery, updateBlogById };
+//DeleteBlog-ById
+const deleteUser = async function (req, res) {
+  try {
+    let blogId = req.params.blogId;
+    let blog = await blogModel.findOne({ _id: blogId, isDeleted: false })
+
+    if (!blog) {
+      return res.status(404).send({ status: false, msg: "No blogs found to delete" })
+    }
+    await blogModel.findOneAndUpdate({ _id: blogId }, { $set: { isDeleted: true, deletedAt: new Date() } })
+    return res.status(200).send({ status: true, msg: "deleted successfully" }) // here  status true and data comes
+
+  } catch (error) {
+  
+    res.status(500).send({ msg: error.message })
+  }
+}
+
+//Delete-blogsBy-queryParams
+let deleteByQuery = async function (req, res) {
+      let category = req.query.category
+      let authorId = req.query.authorId
+      let tags = req.query.tags
+      let subcategory = req.query.subcategory
+      let isPublished = req.query.isPublished
+      let conditions = {
+        $or: [
+          { category: category },
+          { authorId: authorId },
+          { tags: tags },
+          { subcategory: subcategory },
+        ]
+      }
+      if (isPublished === "false") { res.send({ msg: "it is unpublished" }) }
+
+      else if (!conditions) { res.send({ msg: "not found" }) }
+      else {
+        let DeleteWithFilters = await blogModel.find(conditions).updateMany({ conditions }, { isDeleted: true })
+        let updatedData = await blogModel.find(DeleteWithFilters)
+        res.send(updatedData)
+      }
+
+    }
+module.exports = { createblog, getBlogByQuery, updateBlogById,deleteByQuery,deleteUser };
+
