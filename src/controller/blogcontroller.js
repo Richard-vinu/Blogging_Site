@@ -3,15 +3,26 @@ let blogModel = require('../models/blogModel')
 
 let createblog = async function(req,res){
     let data = req.body
-    
+    let{title,body,authorId,tags,category,subcategory,isDeleted,isPublished}=data
+    if(!title){ res.status(400).send({ msg: "title is mandatory" }) }
+    if(!body){ res.status(400).send({ msg: "body is mandatory" }) }
+
+    if(!authorId){ res.status(400).send({ msg: "authorId is mandatory" }) }
+    if(!tags){ res.status(400).send({ msg: "tags is mandatory" }) }
+    if(!category){ res.status(400).send({ msg: "category is mandatory" }) }
+    if(!subcategory){ res.status(400).send({ msg: "subcategory is mandatory" }) }
+    if(!isDeleted){ res.status(400).send({ msg: "isDeleted is mandatory" }) }
+    if(!isPublished){ res.status(400).send({ msg: "isPublished is mandatory" }) }
+
     let savedata = await blogModel.create(data)
     res.send({data:savedata})
 }
+  
 
 
+ 
 
-
-
+  
 const getBlogByQuery = async function (req, res) {
     try {
       let authId = req.query.authorId;

@@ -8,9 +8,7 @@ const {createblog,getBlogByQuery,updateBlogById}= require("../controller/blogcon
 router.post('/authors',createAuthor)
 
 router.post("/login",loginAuthor)
-
-router.post('/createblog',createblog)
-
+router.post('/blogs',createblog)
 router.get('/blogs',getBlogByQuery)
 
 router.put('/blogs/:blogId',updateBlogById)
