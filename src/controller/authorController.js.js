@@ -2,7 +2,8 @@ const authorModel = require('../models/authorModel')
 const jwt = require("jsonwebtoken")
 
 
-//Create a Author
+//-----------------------------------------⭐Create-Author⭐-------------------------------------------------------------------------------
+
 const createAuthor = async (req, res) => {
 
     try {
@@ -36,7 +37,8 @@ const createAuthor = async (req, res) => {
 } 
 
 
-//Login-Author
+//--------------------------------------⭐Login-Author⭐-------------------------------------------------------------------
+
 const loginAuthor = async (req, res) => {
     try { 
         
@@ -54,8 +56,7 @@ const loginAuthor = async (req, res) => {
             },
             "Blogging site Mini Project"
         )
-        res.status(200).send({ status: true, token: token })
-
+        res.status(200).send({ status: true, data:{"token":token}})
     }
     catch (err) {
         res.status(500).send({ msg: err.message })
