@@ -1,9 +1,7 @@
 let blogModel = require("../models/blogModel");
 
 
-
-
-//-------------------------------⭐Create_Blog⭐--------------------------------------------------------------------------
+//----------------------⭐Create_Blog⭐------------------------//
 
 let createblog = async function (req, res) {
   try {
@@ -44,7 +42,7 @@ let createblog = async function (req, res) {
   }
 };
 
-//-----------------------------------⭐Get-Blogs-By_Query⭐---------------------------------------------------------------------
+//---------------------⭐Get-Blogs-By_Query⭐------------------//
 
 const getBlogByQuery = async function (req, res) {
   try {
@@ -82,7 +80,7 @@ const getBlogByQuery = async function (req, res) {
 };
 
 
-//------------------------------------⭐UpdateBlog-By-Id⭐-------------------------------------------------------------------
+//------------------------⭐UpdateBlog-By-Id⭐----------------//
 
 const updateBlogById = async (req, res) => {
   try {
@@ -123,7 +121,7 @@ const updateBlogById = async (req, res) => {
 };
 
 
-//----------------------------⭐DeleteBlog-ById⭐--------------------------------------------------------------------
+//------------------------⭐DeleteBlog-ById⭐------------------//
 
 const deleteUser = async function (req, res) {
   try {
@@ -139,26 +137,34 @@ const deleteUser = async function (req, res) {
     res.status(500).send({ msg: error.message })
   }
 }
-//-----------------------------⭐Delete-blogsBy-queryParams⭐-----------------------------------------------------------------------------------
+//-----------------------⭐Delete-blogsBy-queryParams⭐-----------//
 
 let deleteByQuery = async function (req, res) {
-      let category = req.query.category
-      let authorId = req.query.authorId
-      let tags = req.query.tags
-      let subcategory = req.query.subcategory
-      let isPublished = req.query.isPublished
-      let conditions = {
-        $or: [
-          { category: category },
-          { authorId: authorId },
-          { tags: tags },
-          { subcategory: subcategory },
-        ]
-      }
-      if (isPublished === "false") { res.send({ msg: "it is unpublished" }) }
+  try {
+    let filters = req.query
+    let isPublished = req.query.isPublished
+
+
+    if (Object.keys(filters) == 0) { res.status(400).send({ msg: "no query to filter to delete" }) }
+    else {
+      if (isPublished == "true") { res.status(400).send({ msg: " can not delete as it is   already published" }) }
+      else if (isPublished == "false" || isPublished == undefined) {
+
+        let queryCheck = await blogModel.find(filters)
+        if (queryCheck == 0) { res.status(404).send({ msg: "can not find the enteries" }) }
+        if(queryCheck.isDeleted == "true"){res.status(404).send({msg:"blog is deleted can not found"})}
+        else {
+          let updatedData = await blogModel.updateMany({ filters }, { isDeleted: true })
+          let sendRes = await blogModel.find(filters)//.count()
+          res.status(200).send({ msg: sendRes })
 
         }
-   
-    
+      }
+    }
+  } catch (error) {
+    res.status(500).send({ status: false, msg: "server Error", err: err.message });
+  }
+  
+}
 module.exports = { createblog, getBlogByQuery, updateBlogById,deleteByQuery,deleteUser };
 
