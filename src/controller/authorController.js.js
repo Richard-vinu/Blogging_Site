@@ -1,6 +1,8 @@
 const authorModel = require('../models/authorModel')
 const jwt = require("jsonwebtoken")
 
+
+//Create a Author
 const createAuthor = async (req, res) => {
 
     try {
@@ -32,10 +34,12 @@ const createAuthor = async (req, res) => {
         res.status(500).send({ status: false, error: err.message })
     }
 } 
+
+
+//Login-Author
 const loginAuthor = async (req, res) => {
     try { 
-        // let {email} =req.body
-        // let {password}=req.body
+        
         let data = req.body
         let { email, password } = data
         if (!email) { res.status(400).send({ msg: "email id is mandatory" }) }
@@ -60,5 +64,4 @@ const loginAuthor = async (req, res) => {
 }
 
 
-module.exports = { createAuthor }
-module.exports.loginAuthor = loginAuthor
+module.exports = { createAuthor,loginAuthor }
