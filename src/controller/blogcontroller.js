@@ -123,10 +123,10 @@ const updateBlogById = async (req, res) => {
 
 //------------------------⭐DeleteBlog-ById⭐------------------//
 
-const deleteUser = async function (req, res) {
+const deleteById = async function (req, res) {
   try {
     let blogId = req.params.blogId;
-    let blog = await blogModel.findOne({ _id: blogId, isDeleted: false })
+    let blog = await blogModel.find({ _id: blogId, isDeleted: false })
     if (!blog) {
       return res.status(404).send({ status: false, msg: "No blogs found to delete" })
     }
@@ -166,5 +166,5 @@ let deleteByQuery = async function (req, res) {
   }
   
 }
-module.exports = { createblog, getBlogByQuery, updateBlogById,deleteByQuery,deleteUser };
+module.exports = { createblog, getBlogByQuery, updateBlogById,deleteByQuery, deleteById };
 
