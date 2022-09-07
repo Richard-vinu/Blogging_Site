@@ -56,7 +56,7 @@ const loginAuthor = async (req, res) => {
             },
             "Blogging site Mini Project"
         )
-        res.status(200).send({ status: true, token: token })
+        res.status(200).send({ status: true, data:{"token":token}})
     }
     catch (err) {
         res.status(500).send({ msg: err.message })
