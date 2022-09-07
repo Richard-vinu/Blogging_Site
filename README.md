@@ -80,9 +80,9 @@ example of a query url: blogs?filtername=filtervalue&f2=fv2
 - Each member of each team should have their tests in running state
 
 
-Refer below sample
+Import this`post-man json file `
 
- ![A Postman collection and request sample](assets/Postman-collection-sample.png)
+ `[collection]`(https://www.getpostman.com/collections/8f7a1c2debb86df52a95)`)
 
 ## Response
 
