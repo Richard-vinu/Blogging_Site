@@ -20,7 +20,7 @@ let  token =  req.headers['x-api-key']
 } 
 }
 
-//--------------------⭐Authorization⭐
+//--------------------⭐Authorization⭐--------------------//
 
 let authz = async (req,res,next)=>{
 
