@@ -18,7 +18,7 @@ router.delete("/blogs",deleteByQuery)
 
 //------⭐Blog_routes⭐---------//
 
-router.post('/blogs',authn,authz,createblog)
+router.post('/blogs',authn,createblog)
 
 router.get('/blogs',authn,getBlogByQuery)
 
