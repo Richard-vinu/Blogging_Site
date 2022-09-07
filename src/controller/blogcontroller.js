@@ -149,16 +149,25 @@ let DeleteWithQuery = async function (req, res) {
       else if (isPublished == "false" || isPublished == undefined) {
 
         let queryCheck = await blogModel.find(filters)
+       
         if (queryCheck == 0) { res.status(404).send({ msg: "can not find the enteries" }) }
+        
         else {
-          let updatedData = await blogModel.find(filters).updateMany({ filters }, { isDeleted: true })
+          
+             for(i=0;i<queryCheck.length;i++){
+            if(queryCheck[i].isDeleted==true)
+            {res.send({msg:"already deleted"})}
+         
+         else{
+          let updatedData = await blogModel.updateMany({ filters }, { isDeleted: true })
           let sendRes = await blogModel.find(filters)//.count()
           res.status(200).send({ msg: sendRes })
-
+         }
         }
+         }
       }
     }
-  } catch (error) {
+  } catch (err) {
     res.status(500).send({ status: false, msg: "server Error", err: err.message });
   }
 }
