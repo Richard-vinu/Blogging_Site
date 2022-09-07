@@ -13,14 +13,15 @@ router.post("/login",loginAuthor)
 
 
 //------⭐Blog_routes⭐---------//
-router.post('/blogs',authn,createblog)
+
+router.post('/blogs',authn,authz,createblog)
 
 router.get('/blogs',authn,getBlogByQuery)
 
-router.put('/blogs/:blogId/:auhtorId',authn,authz,updateBlogById)
+router.put('/blogs/:blogId',authn,authz,updateBlogById)
 
-router.delete("/blogs/:blogId/:auhtorId",authn,authz,deleteById)
+router.delete("/blogs/:blogId",authn,authz,deleteById)
 
-router.delete("/blogs/:authorId",authn,authz,deleteByQuery)
+router.delete("/blogs",authn,authz,deleteByQuery)
 
 module.exports = router

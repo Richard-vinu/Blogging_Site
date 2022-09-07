@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-
+//------------------⭐Authentication⭐--------------//
 let authn = async (req,res,next)=>{
 try{
 let  token =  req.headers['x-api-key']
@@ -20,10 +20,11 @@ let  token =  req.headers['x-api-key']
 } 
 }
 
+//--------------------⭐Authorization⭐
 
 let authz = async (req,res,next)=>{
 
-   let auhtorId = req.params.auhtorId
+   let auhtorId = req.query.auhtorId
 
 if(req.decoded.authorId != auhtorId)
 return res.status(403).send({staus:false,msg:"you are not authorized"})
