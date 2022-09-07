@@ -1,13 +1,10 @@
 let blogModel = require("../models/blogModel");
 
-<<<<<<< HEAD
 
 
 
 //-------------------------------⭐Create_Blog⭐--------------------------------------------------------------------------
 
-=======
->>>>>>> d323e468c2e954448f74f2ea3245d6ff3165b253
 let createblog = async function (req, res) {
   try {
     let data = req.body;
@@ -47,28 +44,7 @@ let createblog = async function (req, res) {
   }
 };
 
-<<<<<<< HEAD
 //-----------------------------------⭐Get-Blogs-By_Query⭐---------------------------------------------------------------------
-=======
-//-------------------------------------------
-const deleteUser = async function (req, res) {
-  try {
-    let blogId = req.params.blogId;
-    let blog = await blogModel.findOne({ _id: blogId, isDeleted: false })
-
-    if (!blog) {
-      return res.status(404).send({ status: false, msg: "No blogs found to delete" })
-    }
-    await blogModel.findOneAndUpdate({ _id: blogId }, { $set: { isDeleted: true, deletedAt: new Date() } })
-    return res.status(200).send({ status: true, msg: "deleted successfully" }) // here  status true and data comes
-
-  } catch (error) {
-
-    res.status(500).send({ msg: error.message })
-  }
-}
-
->>>>>>> d323e468c2e954448f74f2ea3245d6ff3165b253
 
 const getBlogByQuery = async function (req, res) {
   try {
@@ -91,7 +67,7 @@ const getBlogByQuery = async function (req, res) {
       })
       .populate("authorId");
 
-    // module.exports = {createblog,getBlogByQuery,updateBlogById,deleteUser}
+    
 
     //*Validation
 
@@ -105,14 +81,9 @@ const getBlogByQuery = async function (req, res) {
   }
 };
 
-//-------------------------------updateBlogById----------------------------------------
-//By Richard
 
-<<<<<<< HEAD
 //------------------------------------⭐UpdateBlog-By-Id⭐-------------------------------------------------------------------
 
-=======
->>>>>>> d323e468c2e954448f74f2ea3245d6ff3165b253
 const updateBlogById = async (req, res) => {
   try {
     let data = req.body;
@@ -150,29 +121,22 @@ const updateBlogById = async (req, res) => {
       .send({ status: false, msg: "server Error", err: err.message });
   }
 };
-//-------------------delete by query-----------------------------------------
 
 
-<<<<<<< HEAD
-//--------------------------------------⭐DeleteBlog-ById⭐--------------------------------------------------------------------
+//----------------------------⭐DeleteBlog-ById⭐--------------------------------------------------------------------
 
 const deleteUser = async function (req, res) {
-=======
-
-let DeleteWithQuery = async function (req, res) {
->>>>>>> d323e468c2e954448f74f2ea3245d6ff3165b253
   try {
     let filters = req.query
     let isPublished = req.query.isPublished
 
 
-<<<<<<< HEAD
   } catch (error) {
-  
+
     res.status(500).send({ msg: error.message })
   }
 }
-//--------------------------------------⭐Delete-blogsBy-queryParams⭐-----------------------------------------------------------------------------------
+//-----------------------------⭐Delete-blogsBy-queryParams⭐-----------------------------------------------------------------------------------
 
 let deleteByQuery = async function (req, res) {
       let category = req.query.category
@@ -189,31 +153,9 @@ let deleteByQuery = async function (req, res) {
         ]
       }
       if (isPublished === "false") { res.send({ msg: "it is unpublished" }) }
-=======
-    if (Object.keys(filters) == 0) { res.status(400).send({ msg: "no query to filter to delete" }) }
-    else {
-      if (isPublished == "true") { res.status(400).send({ msg: " can not delete as it is   already published" }) }
-      else if (isPublished == "false" || isPublished == undefined) {
-
-        let queryCheck = await blogModel.find(filters)
-        if (queryCheck == 0) { res.status(404).send({ msg: "can not find the enteries" }) }
-        else {
-          let updatedData = await blogModel.find(filters).updateMany({ filters }, { isDeleted: true })
-          let sendRes = await blogModel.find(filters)//.count()
-          res.status(200).send({ msg: sendRes })
->>>>>>> d323e468c2e954448f74f2ea3245d6ff3165b253
 
         }
-      }
-    }
-<<<<<<< HEAD
+   
     
 module.exports = { createblog, getBlogByQuery, updateBlogById,deleteByQuery,deleteUser };
-=======
-  } catch (error) {
-    res.status(500).send({ status: false, msg: "server Error", err: err.message });
-  }
-}
-module.exports = { createblog, getBlogByQuery, updateBlogById, DeleteWithQuery, deleteUser };
->>>>>>> d323e468c2e954448f74f2ea3245d6ff3165b253
 

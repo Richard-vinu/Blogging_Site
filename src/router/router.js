@@ -3,7 +3,7 @@ const express = require('express')
 
 const router = express.Router()
 const {createAuthor,loginAuthor}= require('../controller/authorController.js')
-const {createblog,getBlogByQuery,updateBlogById,deleteUser,DeleteWithQuery}= require("../controller/blogcontroller")
+const {createblog,getBlogByQuery,updateBlogById,deleteUser,deleteByQuery}= require("../controller/blogcontroller")
 
 
 
@@ -22,6 +22,6 @@ router.put('/blogs/:blogId',updateBlogById)
 
 router.delete("/blogs/:blogId",deleteUser)
 
-router.delete("/blogs",DeleteWithQuery)
+router.delete("/blogs",deleteByQuery)
 
 module.exports = router
