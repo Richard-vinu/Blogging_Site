@@ -163,8 +163,8 @@ let deleteByQuery = async function (req, res) {
          
          else{
 
-         if(queryCheck.isDeleted == "true"){res.status(404).send({msg:"blog is deleted can not found"})}
-          else {
+        if(queryCheck.isDeleted == "true"){res.status(404).send({msg:"blog is deleted can not found"})}
+        else {
 
           let updatedData = await blogModel.updateMany({ filters }, { isDeleted: true })
           let sendRes = await blogModel.find(filters)//.count()
@@ -177,7 +177,6 @@ let deleteByQuery = async function (req, res) {
   } catch (err) {
     res.status(500).send({ status: false, msg: "server Error", err: err.message });
   }
-  
 }
 module.exports = { createblog, getBlogByQuery, updateBlogById,deleteByQuery, deleteById };
 
