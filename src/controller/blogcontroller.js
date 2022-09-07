@@ -3,7 +3,8 @@ let blogModel = require("../models/blogModel");
 
 
 
-//Create_Blog
+//-------------------------------⭐Create_Blog⭐--------------------------------------------------------------------------
+
 let createblog = async function (req, res) {
   try {
     let data = req.body;
@@ -44,7 +45,8 @@ let createblog = async function (req, res) {
   }
 };
 
-//Get-Blogs
+//-----------------------------------⭐Get-Blogs-By_Query⭐---------------------------------------------------------------------
+
 const getBlogByQuery = async function (req, res) {
   try {
     let authId = req.query.authorId;
@@ -79,7 +81,8 @@ const getBlogByQuery = async function (req, res) {
 };
 
 
-//UpdateBlog-By-Id
+//------------------------------------⭐UpdateBlog-By-Id⭐-------------------------------------------------------------------
+
 const updateBlogById = async (req, res) => {
   try {
     let data = req.body;
@@ -120,7 +123,9 @@ const updateBlogById = async (req, res) => {
   }
 };
 
-//DeleteBlog-ById
+
+//--------------------------------------⭐DeleteBlog-ById⭐--------------------------------------------------------------------
+
 const deleteUser = async function (req, res) {
   try {
     let blogId = req.params.blogId;
@@ -137,8 +142,8 @@ const deleteUser = async function (req, res) {
     res.status(500).send({ msg: error.message })
   }
 }
+//--------------------------------------⭐Delete-blogsBy-queryParams⭐-----------------------------------------------------------------------------------
 
-//Delete-blogsBy-queryParams
 let deleteByQuery = async function (req, res) {
       let category = req.query.category
       let authorId = req.query.authorId
@@ -163,5 +168,6 @@ let deleteByQuery = async function (req, res) {
       }
 
     }
+    
 module.exports = { createblog, getBlogByQuery, updateBlogById,deleteByQuery,deleteUser };
 
