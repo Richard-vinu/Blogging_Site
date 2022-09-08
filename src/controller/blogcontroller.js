@@ -132,7 +132,7 @@ const updateBlogById = async (req, res) => {
         $push: { subcategory: subcategory, tags: tags },
         isPublished: true,
         publishedAt: new Date(),
-        isPublished:false,
+        isPublished:true,
        
       },
       { new: true }
@@ -158,7 +158,7 @@ const deleteById = async function (req, res) {
     let blogId = req.params.blogId;
 
     if(!isValidObjectId(blogId))
-    return res.status(400).send({status:false,msg:"enter the valid blogId"})
+    return res.status(400).send({status:false,msg:"enter the valid blogId "})
 
     let blog= await blogModel.findById(blogId)
     if (!blog) {
@@ -172,7 +172,7 @@ return res.status(404).send({staus:false,msg:"this has been deleted Already"})
     return res.status(200).send({ status: true, msg: "Blog deleted successfully" }) 
   } catch (error) {
   
-    res.status(500).send({ msg: error.message })
+    return res.status(500).send({ msg: error.message })
   }
 }
 //-----------------------⭐Delete-blogsBy-queryParams⭐-----------//
@@ -180,48 +180,32 @@ return res.status(404).send({staus:false,msg:"this has been deleted Already"})
 let deleteByQuery = async function (req, res) {
   try {
 
+    let {...data} = req.query
+
+    
+if(Object.keys(data).length == 0)
+return res.status(400).send({status:false,msg:"Enter the key and value in query" })
+
+ let getBlogData = await blogModel.find(data);
+  if (getBlogData.length == 0) {
+  return res.status(404).send({ status: false, msg: "No blog found" });
+}
+
+let blog= await blogModel.find(data)
+if(blog.isDeleted)
+return res.status(404).send({staus:false,msg:"this has been deleted Already"})
+
+    let deletedBlogs = await blogModel.updateMany(
+      data, 
+      {isDeleted: true, isPublished: false, deletedAt: new Date(),publishedAt:null},
+    );
+
+return res.status(404).send({status:true,msg:"blog deleted Sucessfuly"})
 
 
-}
-catch (err) {
-    res.status(500).send({ status: false, msg: "server Error", err: err.message });
-  }
-}
+}catch (error) {
+  return res.status(500).send({ msg: error.message })
+}}
 module.exports = { createblog, getBlogByQuery, updateBlogById,deleteByQuery, deleteById };
 
-
-
-
-  //   let filters = req.query
-  //   let isPublished = req.query.isPublished
-
-
-  //   if (Object.keys(filters) == 0) { res.status(400).send({ msg: "no query to filter to delete" }) }
-  //   else {
-  //     if (isPublished == "true") { res.status(400).send({ msg: " can not delete as it is   already published" }) }
-  //     else if (isPublished == "false" || isPublished == undefined) {
-
-  //       let queryCheck = await blogModel.find(filters)
-       
-  //       if (queryCheck == 0) { res.status(404).send({ msg: "can not find the enteries" }) }
-
-        
-  //       else {
-  //           for(i=0;i<queryCheck.length;i++){
-  //           if(queryCheck[i].isDeleted==true)
-  //                  {res.send({msg:"already deleted"})}
-         
-  //        else{
-
-  //       if(queryCheck.isDeleted == "true"){res.status(404).send({msg:"blog is deleted can not found"})}
-  //       else {
-
-  //         let updatedData = await blogModel.updateMany({ filters }, { isDeleted: true })
-  //         let sendRes = await blogModel.find(filters)//.count()
-  //         res.status(200).send({ msg: sendRes })
-  //        }
-  //       }
-  //        }
-  //     }
-  //   }
-  // }
+ 
