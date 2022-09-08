@@ -100,7 +100,7 @@ const updateBlogById = async (req, res) => {
 
     let blogId = req.params.blogId;
 
-    if(!req.params.blogId)
+    if(!blogId)
   return res.send({msg:"enter the blogId"})
     
       
