@@ -40,6 +40,7 @@ const createAuthor = async (req, res) => {
 //--------------------------------------⭐Login-Author⭐-------------------------------------------------------------------
 
 const loginAuthor = async (req, res) => {
+    
     try { 
         
         let data = req.body
@@ -49,13 +50,13 @@ const loginAuthor = async (req, res) => {
         let authorCheck = await authorModel.findOne({ email: email, password: password })
         if (!authorCheck) { return res.status(401).send("Incorrect email or password.") }
 
-        let token = jwt.sign(
-            {
-                authorId: authorCheck._id.toString(),
-                platform: "education"
-            },
-            "Blogging site Mini Project"
-        )
+
+        let payload = {
+            authorId: authorCheck._id.toString(),
+            platform: "education"
+        }
+
+        let token = jwt.sign(payload,"Blogging site Mini Project")
         res.status(200).send({ status: true, data:{"token":token}})
     }
     catch (err) {

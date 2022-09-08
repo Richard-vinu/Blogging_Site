@@ -6,6 +6,7 @@ let authn = async (req,res,next)=>{
 try{
 let  token =  req.headers['x-api-key']
 
+
   if(!token) 
     return res.send({staus:false,msg:"token enter kar na yarr"})
 
@@ -25,9 +26,10 @@ let  token =  req.headers['x-api-key']
 
 let authz = async (req,res,next)=>{
 
-   let auhtorId = req.query.auhtorId
+   let authorId = req.query.authorId
 
-if(req.decoded.authorId != auhtorId)
+
+if(req.decoded.authorId != authorId)
 return res.status(403).send({staus:false,msg:"you are not authorized"})
 
 next()
