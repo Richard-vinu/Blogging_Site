@@ -157,6 +157,9 @@ const deleteById = async function (req, res) {
   try {
     let blogId = req.params.blogId;
 
+    if(blogId == (":blogId"))
+    return res.send('blogId in parms requied')
+
     if(!isValidObjectId(blogId))
     return res.status(400).send({status:false,msg:"enter the valid blogId "})
 
@@ -206,6 +209,7 @@ return res.status(404).send({status:true,msg:"blog deleted Sucessfuly"})
 }catch (error) {
   return res.status(500).send({ msg: error.message })
 }}
+
 module.exports = { createblog, getBlogByQuery, updateBlogById,deleteByQuery, deleteById };
 
  
