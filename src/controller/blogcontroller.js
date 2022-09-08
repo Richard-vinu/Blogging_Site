@@ -100,6 +100,16 @@ const updateBlogById = async (req, res) => {
 
     let blogId = req.params.blogId;
 
+    if(!req.params.blogId)
+  return res.send({msg:"enter the blogId"})
+    
+      
+
+  if(!isValidObjectId(blogId))
+    return res.status(400).send({status:false,msg:"enter the valid blogId"})
+
+  
+
     if (!blogId)
       return res.status(404).send({ status: false, msg: "No Blog Found" });
 
@@ -124,9 +134,12 @@ const updateBlogById = async (req, res) => {
       { new: true }
     );
 
-    res.send({ data: result });
+    if(result.length == 0)
+    return res.status(404).send({status:false,msg:"no such blogId doc exist in db"})
+
+    return res.send({ data: result });
   } catch (err) {
-    res
+    return res
       .status(500)
       .send({ status: false, msg: "server Error", err: err.message });
   }

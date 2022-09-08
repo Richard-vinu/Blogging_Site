@@ -9,11 +9,9 @@ const{authn,authz} = require('../middleWare/auth')
 //------⭐Author_routes⭐---------//
 
 router.post('/authors',createAuthor)
+
 router.post("/login",loginAuthor)
 
-router.put('/blogs/:blogId',updateBlogById)
-
-router.delete("/blogs",deleteByQuery)
 
 //------⭐Blog_routes⭐---------//
 

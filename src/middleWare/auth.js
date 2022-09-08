@@ -26,7 +26,7 @@ let  token =  req.headers['x-api-key']
 
 let authz = async (req,res,next)=>{
 
-   let authorId = req.query.authorId
+   let authorId = req.body.authorId
 
 
 if(req.decoded.authorId != authorId)
