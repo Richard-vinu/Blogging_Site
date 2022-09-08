@@ -1,5 +1,6 @@
 const authorModel = require('../models/authorModel')
 const jwt = require("jsonwebtoken")
+const validEmail = require('email-validator')
 
 
 //-----------------------------------------⭐Create-Author⭐-------------------------------------------------------------------------------
@@ -10,29 +11,36 @@ const createAuthor = async (req, res) => {
 
         let result = req.body
         let { fname, lname, title, email, password } = result
-        if (!fname) { res.status(400).send({ msg: "fname is mandatory" }) }
-        if (!lname) { res.status(400).send({ msg: "lname is mandatory" }) }
-        if (!title) { res.status(400).send({ msg: "title is mandatory" }) }
-        if (!email) { res.status(400).send({ msg: "email is mandatory" }) }
-        if (!password) { res.status(400).send({ msg: "password is mandatory" }) }
+        
+        if(Object.keys(result).length == 0) return res.status(400).send({ status: false, msg: "data is required in the body" });
+        if(!fname) 
+        return res.status(400).send({ msg: "fname is mandatory" })
+        if(!lname)  
+        return res.status(400).send({ msg: "lname is mandatory" }) 
+        if(!title) 
+        return res.status(400).send({ msg: "title is mandatory" }) 
+        if(!email) 
+        return res.status(400).send({ msg: "email is mandatory" }) 
+        if (!password)
+        return res.status(400).send({ msg: "password is mandatory" })
 
-        //*To check Email Exist or not
 
-        let emailID = await authorModel.findOne({ email })
-        if (emailID) return res.status(400).send({ msg: "Account already Present with this EmailID" })
+      //emumTitle
+        let emumTitle = ['Mr', 'Mrs', 'Miss'];
+        if(!emumTitle.includes(title)) return res.status(400).send({ status: false, msg: "Title should be of Mr,or Mrs, or Miss" });
 
+        //valid-Email
+        if(!validEmail.validate(email)) return res.status(400).send({ status: false, msg: "Enter a valid email" })
 
-        //*Email format Validation
-
-        const validate = function (v) { return /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test(v) }
-        if (!validate(email)) return res.status(400).send({ status: false, msg: "email is not valid" })
-
+        //unique-Email
+        let emailId = await authorModel.findOne({ email:email })
+        if (emailId) return res.status(400).send({ msg: "This emailId is already registered please SignIn" })
         const data = await authorModel.create(result)
 
-        res.status(201).send({ data: data })
+        return res.status(201).send({ data: data })
 
     } catch (err) {
-        res.status(500).send({ status: false, error: err.message })
+        return res.status(500).send({ status: false, error: err.message })
     }
 } 
 
@@ -43,12 +51,18 @@ const loginAuthor = async (req, res) => {
     
     try { 
         
-        let data = req.body
-        let { email, password } = data
-        if (!email) { res.status(400).send({ msg: "email id is mandatory" }) }
-        if (!password) { res.status(400).send({ msg: "password is mandatory" }) }
-        let authorCheck = await authorModel.findOne({ email: email, password: password })
-        if (!authorCheck) { return res.status(401).send("Incorrect email or password.") }
+    let data = req.body
+    let { email, password } = data
+
+    if(!email) 
+    return res.status(400).send({ msg: "email id is mandatory" })
+
+    if(!password)
+    return res.status(400).send({ msg: "password is mandatory" }) 
+
+    let authorCheck = await authorModel.findOne({ email: email, password: password })
+    if(!authorCheck)
+    return res.status(401).send("Incorrect email or password.") 
 
 
         let payload = {
@@ -57,10 +71,10 @@ const loginAuthor = async (req, res) => {
         }
 
         let token = jwt.sign(payload,"Blogging site Mini Project")
-        res.status(200).send({ status: true, data:{"token":token}})
+       return res.status(200).send({ status: true, data:{"token":token}})
     }
     catch (err) {
-        res.status(500).send({ msg: err.message })
+        return res.status(500).send({ msg: err.message })
 
     }
 }

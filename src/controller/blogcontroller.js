@@ -1,38 +1,47 @@
 let blogModel = require("../models/blogModel");
-
+let authorModel = require('../models/authorModel');
+const { default: mongoose } = require("mongoose");
+const isValidObjectId = (ObjectId)=>{
+  return mongoose.Types.ObjectId.isValid(ObjectId)
+}
 
 //----------------------⭐Create_Blog⭐------------------------//
 
 let createblog = async function (req, res) {
   try {
     let data = req.body;
-    let { title, body, authorId, tags, category, subcategory, isPublished } =
-      data;
-    if (!title) {
-      res.status(400).send({ msg: "title is mandatory" });
-    }
-    if (!body) {
-      res.status(400).send({ msg: "body is mandatory" });
-    }
-
-    if (!authorId) {
-      res.status(400).send({ msg: "authorId is mandatory" });
-    }
-    if (!tags) {
-      res.status(400).send({ msg: "tags is mandatory" });
-    }
-    if (!category) {
-      res.status(400).send({ msg: "category is mandatory" });
-    }
-    if (!subcategory) {
-      res.status(400).send({ msg: "subcategory is mandatory" });
-    }
+    let { title, body, authorId, category, isPublished,isDeleted }=data
+      
+    if (!title) 
+     return res.status(400).send({ msg: "title is mandatory" });
+    
+    if (!body) 
+     return res.status(400).send({ msg: "body is mandatory" });
+    
+    if (!authorId) 
+    return res.status(400).send({ msg: "authorId is mandatory" });
+    
+    if (!category) 
+   return res.status(400).send({ msg: "category is mandatory" });
+    
 
     if (isPublished) {
       let timeStamps = new Date();
       data.publishedAt = timeStamps;
     }
 
+    if(isDeleted){
+      let timeStamps = new Date();
+    data.deletedAt = timeStamps;
+    }
+
+    if(!isValidObjectId(authorId))
+    return res.status(400).send({status:false,msg:"enter the valid AuthorId"})
+
+    
+    let validAuthorId = await authorModel.findById(authorId) 
+    if(!validAuthorId)
+    return res.status(404).send({status:false,msg:"no author found with  this AuthorId"})
     let blogCreated = await blogModel.create(data);
     res.status(201).send({ status: true, data: blogCreated });
   } catch (err) {
@@ -46,34 +55,37 @@ let createblog = async function (req, res) {
 
 const getBlogByQuery = async function (req, res) {
   try {
-    let authId = req.query.authorId;
-    let cat = req.query.category;
-    let subcat = req.query.subcategory;
-    let tag = req.query.tags;
+
+    
+    let data = req.query
+    let {authorId,category,subcategory,tags} = data
 
 
-    let allData = await blogModel
+    if(Object.keys(data).length == 0)
+  return res.status(400).send({status:false,msg:"Enter the key and value to filter" })
+  
+
+    let value = await blogModel
       .find({
         isDeleted: false,
         isPublished: true,
         $or: [
-          { authorId: authId },
-          { category: cat },
-          { subcategory: subcat },
-          { tags: tag },
+          { authorId: authorId },
+          { category: category },
+          { subcategory: subcategory },
+          { tags: tags },
+        
         ],
       })
       .populate("authorId");
 
-    
+      if(value.length == 0)
+      return res.status(404).send({status:false,msg:"no such blog exist in db"})
 
-    //*Validation
-
-    if (allData.length == 0)
-      return res.status(404).send({ msg: "Enter valid Details" });
-    res.status(200).send({ status: true, msg: allData });
+     
+    res.status(200).send({ status: true, msg: value });
   } catch (err) {
-    res
+    return res
       .status(500)
       .send({ status: false, msg: "server Error", err: err.message });
   }
