@@ -186,7 +186,7 @@ const deleteByQuery = async (req, res) =>{
     if(data.hasOwnProperty('authorId')){ 
       if(!isValidObjectId(data.authorId)) return res.status(400).send({ status: false, msg: "Enter a valid author Id" });
       if(decodedToken.authorId !== data.authorId) return res.status(403).send({ status: false, msg: "Action Forbidden" })
-      let {...tempData} = data;
+      
       
     }
 

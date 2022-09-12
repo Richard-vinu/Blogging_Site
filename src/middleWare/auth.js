@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
+const blogModel = require('../models/blogModel')
 const isValidObjectId = (ObjectId)=>{
   return mongoose.Types.ObjectId.isValid(ObjectId)
 }
@@ -32,10 +33,18 @@ let authz = async (req,res,next)=>{
 
    let authorId = req.body.authorId
 
-   if(!isValidObjectId(authorId))
-   return res.status(400).send({status:false,msg:"enter the valid authorId"})
+  //  let blogId = req.parmam.blogId
 
-if(req.decoded.authorId != authorId)
+  //  if(!isValidObjectId(authorId))
+  //  return res.status(400).send({status:false,msg:"enter the valid authorId"})
+
+   let blogData = await blogModel.findById(req.params.blogId); 
+   if(!blogData) return res.status(404).send({ status: false, msg: "Error, Please check Id and try again" });
+
+
+
+
+if(req.decoded.authorId != blogData.authorId)
 return res.status(403).send({staus:false,msg:"you are not authorized"})
 
 next()

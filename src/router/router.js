@@ -22,6 +22,6 @@ router.put('/blogs/:blogId',authn,authz,updateBlogById)
 
 router.delete("/blogs/:blogId",authn,authz,deleteById)
 
-router.delete("/blogs",authn,authz,deleteByQuery)
+router.delete("/blogs",authn,deleteByQuery)
 
 module.exports = router
