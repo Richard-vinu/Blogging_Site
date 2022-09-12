@@ -32,11 +32,12 @@ const createAuthor = async (req, res) => {
         //valid-Email
         if(!validEmail.validate(email)) return res.status(400).send({ status: false, msg: "Enter a valid email" })
 
-        if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)) {
+        let uniquePassword =/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+
+        if ( uniquePassword.test(password)) {
             return  res.status(400).send({ status: false, message: `password should contain atleastone number or one alphabet and should be 9 character long` });
           }
   
-
         //unique-Email
         let emailId = await authorModel.findOne({ email:email })
         if (emailId) return res.status(400).send({ msg: "This emailId is already registered please SignIn" })

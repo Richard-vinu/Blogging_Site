@@ -5,6 +5,7 @@ const isValidObjectId = (ObjectId)=>{
   return mongoose.Types.ObjectId.isValid(ObjectId)
 }
 
+
 //----------------------⭐Create_Blog⭐------------------------//
 
 let createblog = async function (req, res) {
@@ -63,6 +64,9 @@ const getBlogByQuery = async function (req, res) {
 
     if(Object.keys(data).length == 0)
   return res.status(400).send({status:false,msg:"Enter the key and value to filter" })
+
+  if(!isValidObjectId(authorId))
+  return res.status(400).send({status:false,msg:"enter the valid AuthorId"})
   
 
     let value = await blogModel
@@ -105,7 +109,7 @@ const updateBlogById = async (req, res) => {
        
 
   if(!isValidObjectId(blogId))
-    return res.status(400).send({status:false,msg:"enter the valid blogId"})
+    return res.status(400).send({status:false,msg:"enter the valid blogId"})  
 
     if (!blogId)
       return res.status(404).send({ status: false, msg: "No Blog Found" });
@@ -147,7 +151,7 @@ const updateBlogById = async (req, res) => {
 };
 
 
-//------------------------⭐DeleteBlog-ById⭐------------------//
+//-----------------------⭐DeleteBlog-ById⭐------------------//
 
 const deleteById = async function (req, res) {
   try {
@@ -172,7 +176,7 @@ const deleteById = async function (req, res) {
   }
 }
 
-//-----------------------⭐Delete-blogsBy-queryParams⭐-----------//
+//---------------------⭐Delete-blogsBy-queryParams⭐-----------//
 
 
 const deleteByQuery = async (req, res) =>{
@@ -186,8 +190,6 @@ const deleteByQuery = async (req, res) =>{
     if(data.hasOwnProperty('authorId')){ 
       if(!isValidObjectId(data.authorId)) return res.status(400).send({ status: false, msg: "Enter a valid author Id" });
       if(decodedToken.authorId !== data.authorId) return res.status(403).send({ status: false, msg: "Action Forbidden" })
-      
-      
     }
 
     let timeStamps = new Date(); 

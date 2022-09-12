@@ -2,12 +2,12 @@ const express = require('express')
 let route = require('./src/router/router')
 const bodyParser = require('body-parser');
 const { default: mongoose } = require('mongoose');
-const PORT = 3000
+const PORT =  process.env.PORT || 3000
 const app = express();
 
 app.use(bodyParser.json());
 
-mongoose.connect("mongodb+srv://manaskumar:iFVJhjYrsH7iars8@cluster0.s4pqkzd.mongodb.net/Project1?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://richardwork:2YLjcp0favzUASR9@cluster3.bli4t.mongodb.net/RichardProject?retryWrites=true&w=majority", {
     useNewUrlParser: true
 })
 .then( () => console.log("MongoDb is connected"))
@@ -16,6 +16,6 @@ mongoose.connect("mongodb+srv://manaskumar:iFVJhjYrsH7iars8@cluster0.s4pqkzd.mon
 app.use('/', route);
 
 
-app.listen(process.env.PORT || PORT, function () {
-    console.log('Server is  running on port ' + (process.env.PORT || PORT))
+app.listen( PORT, function () {
+    console.log(`Server is  running on port  ${PORT}`)
 });  
