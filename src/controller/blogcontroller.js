@@ -179,42 +179,14 @@ const deleteById = async function (req, res) {
 }
 //-----------------------⭐Delete-blogsBy-queryParams⭐-----------//
 
-// let deleteByQuery = async function (req, res) {
-//   try {
 
-//     let {...data} = req.query
-//     let authorId = req.body.authorId
-    
-// if(Object.keys(data).length == 0)
-// return res.status(400).send({status:false,msg:"Enter the key and value in query" })
-
-//  let getBlogData = await blogModel.find(data);
-//   if (getBlogData.length == 0) {
-//   return res.status(404).send({ status: false, msg: "No blog found" });
-// }
-
-// let blog= await blogModel.find({_id:authorId},data)
-//   if(blog.isDeleted)
-//   return res.status(404).send({staus:false,msg:"this has been deleted Already"})
-
-//     let deletedBlogs = await blogModel.findOneAndUpdate(
-//       data, 
-//       {isDeleted: true, isPublished: false, deletedAt: new Date(),publishedAt:null},
-//     );
-
-// return res.status(404).send({status:true,msg:"blog deleted Sucessfuly"})
-
-
-// }catch (error) {
-//   return res.status(500).send({ msg: error.message })
-// }}
 const deleteByQuery = async (req, res) =>{
   try{
     let {...data} = req.query; //destructuring the data from the request query
     let decodedToken = req.decoded;   
 
     //validating the data for empty values
-    if(Object.keys(data).length == 0) return res.send({ status: false, msg: "Error!, Details are needed to delete a blog" });
+    if(Object.keys(data).length == 0) return res.send({ status: false, msg: "Fill the Query" });
 
     if(data.hasOwnProperty('authorId')){ //checking that the authorId is present or not
       if(!isValidObjectId(data.authorId)) return res.status(400).send({ status: false, msg: "Enter a valid author Id" });
@@ -223,13 +195,7 @@ const deleteByQuery = async (req, res) =>{
       delete(tempData.authorId); //deleting the authorId from the data
       let getValues = Object.values(tempData) //getting the values from the data object
 
-      //validating that the getValues contains numbers or not
-      if(validString.test(getValues)) return res.status(400).send({ status: false, msg: "Data should not contain numbers" })
-    }else{
-      let getValues = Object.values(data) //getting the values from the data object
-
-      //validating that the getValues contains numbers or not
-      if(validString.test(getValues)) return res.status(400).send({ status: false, msg: "Data should not contain numbers" })
+      
     }
 
     let timeStamps = new Date(); //getting the current timeStamps
@@ -253,9 +219,9 @@ const deleteByQuery = async (req, res) =>{
       {isDeleted: true, isPublished: false, deletedAt: timeStamps},
     );
 
-    res.status(200).send({ status: true, msg: `${deletedBlogs.modifiedCount} blogs has been deleted` });
+    return res.status(200).send({ status: true, msg: `${deletedBlogs.modifiedCount} blogs has been deleted` });
   } catch (err) {
-    res.status(500).send({ status: false, error: err.message });
+    return res.status(500).send({ status: false, error: err.message });
   }
 };
 
