@@ -211,7 +211,7 @@ const deleteById = async function (req, res) {
 const deleteByQuery = async (req, res) =>{
   try{
     let {...data} = req.query; //destructuring the data from the request query
-    let decodedToken = req.decodedToken;   
+    let decodedToken = req.decoded;   
 
     //validating the data for empty values
     if(Object.keys(data).length == 0) return res.send({ status: false, msg: "Error!, Details are needed to delete a blog" });
