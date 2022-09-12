@@ -186,21 +186,18 @@ const deleteByQuery = async (req, res) =>{
     //validating the data for empty values
     if(Object.keys(data).length == 0) return res.send({ status: false, msg: "Fill the Query" });
 
-    if(data.hasOwnProperty('authorId')){ //checking that the authorId is present or not
+    if(data.hasOwnProperty('authorId')){ 
       if(!isValidObjectId(data.authorId)) return res.status(400).send({ status: false, msg: "Enter a valid author Id" });
       if(decodedToken.authorId !== data.authorId) return res.status(403).send({ status: false, msg: "Action Forbidden" })
       let {...tempData} = data;
-      delete(tempData.authorId); //deleting the authorId from the data
-      let getValues = Object.values(tempData) //getting the values from the data object
-
       
     }
 
-    let timeStamps = new Date(); //getting the current timeStamps
+    let timeStamps = new Date(); 
     
     let getBlogData = await blogModel.find({ authorId: decodedToken.authorId , data });
 
-    //if any blog document doesn't match with  query data
+    //if match not found 
     if (getBlogData.length == 0) {
       return res.status(404).send({ status: false, msg: "No blog found" });
     }
