@@ -17,5 +17,5 @@ app.use('/', route);
 
 
 app.listen(process.env.PORT || PORT, function () {
-    console.log('Express app running on port ' + (process.env.PORT || PORT))
+    console.log('Server is  running on port ' + (process.env.PORT || PORT))
 });  
