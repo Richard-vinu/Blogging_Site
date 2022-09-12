@@ -18,7 +18,7 @@ let  token =  req.headers['x-api-key']
     req.decoded = decodedtoken
 
     if(!decodedtoken) 
-    return res.status(401).send({status:false,msg:"invalid-token"})
+    return res.status(401).send({status:false,msg:"you are Unauthorized"})
 
     next()
 }catch(err){
