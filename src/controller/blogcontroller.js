@@ -138,7 +138,6 @@ const updateBlogById = async (req, res) => {
       { new: true }
     );
 
-
     if(result.length == 0)
     return res.status(404).send({status:false,msg:"no such blogId doc exist in db"})
 
@@ -167,8 +166,8 @@ const deleteById = async function (req, res) {
     if (!blog) {
       return res.status(404).send({ status: false, msg: "No blogs found / this blog doesn't exist " })
     }
-if(blog.isDeleted)
-return res.status(404).send({staus:false,msg:"this has been deleted Already"})
+    if(blog.isDeleted)
+    return res.status(404).send({staus:false,msg:"this has been deleted Already"})
 
 
     await blogModel.findOneAndUpdate({ _id: blogId }, { $set: { isDeleted: true, deletedAt: new Date() } })
@@ -184,7 +183,7 @@ let deleteByQuery = async function (req, res) {
   try {
 
     let {...data} = req.query
-
+    let authorId = req.body.authorId
     
 if(Object.keys(data).length == 0)
 return res.status(400).send({status:false,msg:"Enter the key and value in query" })
@@ -194,11 +193,11 @@ return res.status(400).send({status:false,msg:"Enter the key and value in query"
   return res.status(404).send({ status: false, msg: "No blog found" });
 }
 
-let blog= await blogModel.find(data)
-if(blog.isDeleted)
-return res.status(404).send({staus:false,msg:"this has been deleted Already"})
+let blog= await blogModel.find({_id:authorId},data)
+  if(blog.isDeleted)
+  return res.status(404).send({staus:false,msg:"this has been deleted Already"})
 
-    let deletedBlogs = await blogModel.updateMany(
+    let deletedBlogs = await blogModel.findOneAndUpdate(
       data, 
       {isDeleted: true, isPublished: false, deletedAt: new Date(),publishedAt:null},
     );
