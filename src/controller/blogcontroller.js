@@ -156,9 +156,6 @@ const deleteById = async function (req, res) {
   try {
     let blogId = req.params.blogId;
 
-    if(blogId == (":blogId"))
-    return res.send('blogId in parms requied')
-
     if(!isValidObjectId(blogId))
     return res.status(400).send({status:false,msg:"enter the valid blogId "})
 
