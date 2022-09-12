@@ -177,12 +177,13 @@ const deleteById = async function (req, res) {
     return res.status(500).send({ msg: error.message })
   }
 }
+
 //-----------------------⭐Delete-blogsBy-queryParams⭐-----------//
 
 
 const deleteByQuery = async (req, res) =>{
   try{
-    let {...data} = req.query; //destructuring the data from the request query
+    let {...data} = req.query; 
     let decodedToken = req.decoded;   
 
     //validating the data for empty values

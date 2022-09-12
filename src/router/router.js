@@ -2,7 +2,6 @@
 
 const router = express.Router()
 const {createAuthor,loginAuthor}= require('../controller/authorController.js')
-
 const {createblog,getBlogByQuery,updateBlogById,deleteById,deleteByQuery}= require("../controller/blogcontroller")
 const{authn,authz} = require('../middleWare/auth')
 
