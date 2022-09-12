@@ -37,7 +37,7 @@ const createAuthor = async (req, res) => {
         if (emailId) return res.status(400).send({ msg: "This emailId is already registered please SignIn" })
         const data = await authorModel.create(result)
 
-        return res.status(201).send({ data: data })
+        return res.status(201).send({ status:true,data: data })
 
     } catch (err) {
         return res.status(500).send({ status: false, error: err.message })
