@@ -5,7 +5,6 @@ const isValidObjectId = (ObjectId)=>{
   return mongoose.Types.ObjectId.isValid(ObjectId)
 }
 
-
 //----------------------⭐Create_Blog⭐------------------------//
 
 let createblog = async function (req, res) {
@@ -44,6 +43,7 @@ let createblog = async function (req, res) {
     if(!validAuthorId)
     return res.status(404).send({status:false,msg:"no author found with  this AuthorId"})
     let blogCreated = await blogModel.create(data);
+
     res.status(201).send({ status: true, data: blogCreated });
   } catch (err) {
     res
@@ -51,6 +51,7 @@ let createblog = async function (req, res) {
       .send({ status: false, msg: "server Error", err: err.message });
   }
 };
+
 
 //---------------------⭐Get-Blogs-By_Query⭐------------------//
 
@@ -83,8 +84,8 @@ const getBlogByQuery = async function (req, res) {
       })
       .populate("authorId");
 
-      if(value.length == 0)
-      return res.status(404).send({status:false,msg:"no such blog exist in db"})
+      // if(value.length == 0)
+      // return res.status(404).send({status:false,msg:"no such blog exist in db"})
 
      
     res.status(200).send({ status: true, msg: value });
@@ -96,7 +97,7 @@ const getBlogByQuery = async function (req, res) {
 };
 
 
-//------------------------⭐UpdateBlog-By-Id⭐----------------//
+//-------------------------⭐UpdateBlog-By-Id⭐----------------//
 
 const updateBlogById = async (req, res) => {
   try {
@@ -180,7 +181,11 @@ const deleteById = async function (req, res) {
 
 
 const deleteByQuery = async (req, res) =>{
+
+
+
   try{
+
     let {...data} = req.query; 
     let decodedToken = req.decoded;   
 

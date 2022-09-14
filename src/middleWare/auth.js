@@ -30,12 +30,13 @@ let  token =  req.headers['x-api-key']
 //--------------------⭐Authorization⭐--------------------//
 
 let authz = async (req,res,next)=>{
-
+  
   //  let authorId = req.body.authorId
 
   //  let blogId = req.parmam.blogId
 
   //  if(!isValidObjectId(authorId))
+  
   //  return res.status(400).send({status:false,msg:"enter the valid authorId"})
 
    let blogData = await blogModel.findById(req.params.blogId); 

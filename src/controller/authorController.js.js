@@ -41,6 +41,7 @@ const createAuthor = async (req, res) => {
         //unique-Email
         let emailId = await authorModel.findOne({ email:email })
         if (emailId) return res.status(400).send({ msg: "This emailId is already registered please SignIn" })
+       
         const data = await authorModel.create(result)
 
         return res.status(201).send({ status:true,data: data })
@@ -75,6 +76,7 @@ const loginAuthor = async (req, res) => {
             authorId: authorCheck._id.toString(),
             platform: "education"
         }
+        
 
         let token = jwt.sign(payload,"Blogging site Mini Project")
        return res.status(200).send({ status: true, data:{"token":token}})
